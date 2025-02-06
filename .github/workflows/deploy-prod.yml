@@ -9,13 +9,20 @@ jobs:
     steps:
       - name: check out the code to build server
         uses: actions/checkout@v3
+
+      - name: debug secrets
+        run: |
+          echo "Deploying to ${{ secrets.PROD_HOST }}"
+          echo "Using SSH user: ${{ secrets.SSH_USER_NAME }}"
+          echo "SSH Port: ${{ secrets.SSH_PORT }}"
+      
       - name: copy file to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{secrets.PROD_HOST}}
-          username: ${{secrets.SSH_USER_NAME}}
-          port: ${{secrets.SSH_PORT}}
-          key: ${{secrets.SSH_KEY}}
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.SSH_USER_NAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
           source: "./html/*"
           target: "/var/www/html"
           strip_components: 1
